@@ -56,6 +56,7 @@ public class UserService {
         user.setUserFirstName("Ozemenam Divine");
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
+        user.setRole(userRoles);
         userDao.save(user);
 
     }
