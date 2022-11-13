@@ -33,6 +33,7 @@ public class WebSecurityConfiguration  {
     @Autowired
     private UserDetailsService customUserService;
 
+    @Bean
     public AuthenticationManager authenticationManager(){
      return authenticationManager();
     }

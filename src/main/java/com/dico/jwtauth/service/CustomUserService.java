@@ -32,7 +32,14 @@ public class CustomUserService implements UserDetailsService {
    public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception {
        String userName = jwtRequest.getUserName();
        String userPassword = jwtRequest.getUserPassword();
-    return  authenticate(userName, userPassword);
+       authenticate(userName, userPassword);
+       authenticate(userName, userPassword);
+     final UserDetails userDetails = loadUserByUsername(userName);
+     String newGenerated = jwtUtil.generateToken(userDetails);
+
+    User user =  userDao.findById(userName).get();
+    return new JwtResponse(user, newGenerated);
+
    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,11 +49,13 @@ public class CustomUserService implements UserDetailsService {
         return  new org.springframework.security.core.userdetails.User(
                 user.getUserName(),
                 user.getUserPassword(),
+                getAuthorities(user)
+
         );
     }
     else
     {
-
+    throw new UsernameNotFoundException("Username is not valid");
     }
 
    }
@@ -59,7 +68,7 @@ public class CustomUserService implements UserDetailsService {
        });
 
 
-
+     return authorities;
    }
 
     private JwtResponse authenticate(String userName, String userPassword) throws Exception {

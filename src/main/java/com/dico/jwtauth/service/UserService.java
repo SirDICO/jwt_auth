@@ -5,6 +5,7 @@ import com.dico.jwtauth.dao.UserDao;
 import com.dico.jwtauth.model.Role;
 import com.dico.jwtauth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,8 +20,8 @@ public class UserService {
     @Autowired
     private RoleDao roleDoa;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public User registerNewUser(User user){
         return userDao.save(user);
@@ -40,7 +41,7 @@ public class UserService {
 
         User adminUser = new User();
         adminUser.setUserName("admin");
-        adminUser.setUserPassword("admin");
+        adminUser.setUserPassword(getEncodedPassword("admin"));
         adminUser.setUserLastName("Ikenna");
         adminUser.setUserFirstName("Ikenna Divine");
         Set<Role> adminRoles = new HashSet<>();
@@ -51,7 +52,7 @@ public class UserService {
 
         User user = new User();
         user.setUserName("user");
-        user.setUserPassword("user");
+        user.setUserPassword(getEncodedPassword("user"));
         user.setUserLastName("Omega");
         user.setUserFirstName("Ozemenam Divine");
         Set<Role> userRoles = new HashSet<>();
@@ -61,7 +62,7 @@ public class UserService {
 
     }
 
-//    public String getEncodedPassword(String password) {
-//        return passwordEncoder.encode(password);
-//    }
+    public String getEncodedPassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 }
